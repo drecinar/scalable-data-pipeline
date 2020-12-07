@@ -18,7 +18,7 @@ POST_ENDPOINT = 'http://c53c92430757.ngrok.io/iot/d?k=4jggokgpepnvsb2uv4s40d59ov
 
 def getVibrationData():
     #Read acceleration data from ADXL345 and put the results in out.csv file
-    os.system(f'sudo ../adxl345spi/adxl345spi -t {length_s} -f {sample_rate_Hz} -s out.csv')
+    os.system(f'sudo ../adxl345spi/adxl345spi -t {length_s} -f {rate_Hz} -s out.csv')
 
 def parseVibrationData():
     #Parse out.csv file and read the acceleration data
