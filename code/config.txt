@@ -2,5 +2,5 @@
 dataGatheringWindowAsSeconds = 10
 dataGatheringRateAsHertz = 5
 dataSendingWindowsAsSeconds = 10
-fiwareEndpoint = http://www.muhsinaldemir.com
+fiwareEndpoint = http://www.example.com
 sqliteFileName = sensordata.db

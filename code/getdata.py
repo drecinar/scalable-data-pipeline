@@ -15,12 +15,6 @@ x_axis_acceleration = []
 y_axis_acceleration = []
 z_axis_acceleration = []
 
-
-'''
-Send data to Fiware via HTTP POST request
-'''
-POST_ENDPOINT =  'http://f733c3fc722f.ngrok.io/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=vibrationSensor001'
-
 def getVibrationData(length_second, rate_hz):
     #Read acceleration data from ADXL345 and put the results in out.csv file
     os.system(f'sudo ../adxl345spi/adxl345spi -t {length_second} -f {rate_hz} -s out.csv')
