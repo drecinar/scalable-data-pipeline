@@ -3,22 +3,27 @@ import sys
 import numpy as np
 import requests
 from scipy.stats import kurtosis, skew
+import configparser
+from numbers import Number
+import sqlite3
+from sqlite3 import Error
+import time
+import json
 
 #Further parse the acc. data into x,y,z axis
 x_axis_acceleration = []
 y_axis_acceleration = []
 z_axis_acceleration = []
 
-length_s = 10
-rate_Hz = 5
+
 '''
 Send data to Fiware via HTTP POST request
 '''
-POST_ENDPOINT = 'http://c53c92430757.ngrok.io/iot/d?k=4jggokgpepnvsb2uv4s40d59ov&i=vibration001'
+POST_ENDPOINT =  'http://f733c3fc722f.ngrok.io/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=vibrationSensor001'
 
-def getVibrationData():
+def getVibrationData(length_second, rate_hz):
     #Read acceleration data from ADXL345 and put the results in out.csv file
-    os.system(f'sudo ../adxl345spi/adxl345spi -t {length_s} -f {rate_Hz} -s out.csv')
+    os.system(f'sudo ../adxl345spi/adxl345spi -t {length_second} -f {rate_hz} -s out.csv')
 
 def parseVibrationData():
     #Parse out.csv file and read the acceleration data
@@ -78,9 +83,9 @@ def createStatistics():
     '''
     Root Min Square Calculations
     '''
-    RMS_x = np.sqrt(np.mean(x_axis_acceleration))
-    RMS_y = np.sqrt(np.mean(y_axis_acceleration))
-    RMS_z = np.sqrt(np.mean(z_axis_acceleration))
+    RMS_x = np.sqrt(abs(np.mean(x_axis_acceleration)))
+    RMS_y = np.sqrt(abs(np.mean(y_axis_acceleration)))
+    RMS_z = np.sqrt(abs(np.mean(z_axis_acceleration)))
 
     print('RMS_x', RMS_x)
     print('RMS_y', RMS_y)
@@ -146,29 +151,49 @@ def createStatistics():
     }
     return json
 
-def postData(jsonStat):
-    r = requests.post(url = POST_ENDPOINT, json=jsonStat)
-    return r
+def createDatabaseConnection(fileName):
+    conn = None
+    try:
+        conn = sqlite3.connect(fileName)
+    except Error as e:
+        print(e)
+    
+    return conn
 
-def main():
-    #Parameterized file_name.py length_s rate_Hz
-    #Default length_s=10,rate_Hz=5
-    if len(sys.argv) > 1:
-        length_s = sys.argv[1]
-    else:
-        length_s = 10
+    
+def saveToDatabase(conn,startTime,jsonStat):
+    c = conn.cursor()
+    
+    c.execute("INSERT INTO vibration(START_TIME,SENT,MIN_x,MIN_y,MIN_z,MAX_x,MAX_y,MAX_z,MEAN_x,MEAN_y,MEAN_z,RMS_x,RMS_y,RMS_z,STD_x,STD_y,STD_z,SKEW_x,SKEW_y,SKEW_z,KURT_x,KURT_y,KURT_z) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+              (1000,0,jsonStat["MIN_x"],jsonStat["MIN_y"],jsonStat["MIN_z"],jsonStat["MAX_x"],jsonStat["MAX_y"],jsonStat["MAX_z"],jsonStat["MEAN_x"],jsonStat["MEAN_y"],jsonStat["MEAN_z"],jsonStat["RMS_x"],jsonStat["RMS_y"],jsonStat["RMS_z"],
+               jsonStat["STD_x"],jsonStat["STD_y"],jsonStat["STD_z"], jsonStat["SKEW_x"], jsonStat["SKEW_y"],jsonStat["SKEW_z"],jsonStat["KURT_x"],jsonStat["KURT_y"],jsonStat["KURT_z"]))
+    
+    conn.commit()
+    
 
-    if len(sys.argv) > 2:
-        rate_Hz = sys.argv[2]
-    else:
-        rate_Hz = 5
+def main():    
+    configParser = configparser.RawConfigParser()   
+    configFilePath = r'config.txt'
+    configParser.read(configFilePath)
+    
+    lengthSecond = int(configParser.get('scalable-data-pipeline', 'dataGatheringWindowAsSeconds'))
+    rateHz = int(configParser.get('scalable-data-pipeline', 'dataGatheringRateAsHertz'))
+    sqliteFileName = configParser.get('scalable-data-pipeline', 'sqliteFileName')
+    if (lengthSecond) <= 0:
+        lengthSecond = 10
+
+    if int(rateHz)<=0:
+        rateHz = 5
+    
+    conn = createDatabaseConnection(sqliteFileName)
     
     while 1:
-        getVibrationData()
+        startTimeInEpoch = int(time.time())
+        getVibrationData(lengthSecond,rateHz)
         parseVibrationData()
         jsonStat = createStatistics()
         print("jsonStat",jsonStat)
-        #postData(jsonStat)
-        
+        saveToDatabase(conn,startTimeInEpoch,jsonStat)
+    
 if __name__ == '__main__':
     main()
