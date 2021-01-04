@@ -1,0 +1,6 @@
+[scalable-data-pipeline]
+dataGatheringWindowAsSeconds = 10
+dataGatheringRateAsHertz = 5
+dataSendingWindowsAsSeconds = 10
+fiwareEndpoint = http://www.example.com
+sqliteFileName = sensordata.db
