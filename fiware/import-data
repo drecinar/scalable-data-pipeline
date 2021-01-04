@@ -108,27 +108,27 @@ curl -iX POST \
      "entity_type": "VibrationSensor",
      "timezone":    "Europe/Berlin",
      "attributes": [
-       { "object_id": "MIN_x", "name": "MIN_x", "type": "Double" },
-       { "object_id": "MIN_y", "name": "MIN_y", "type": "Double" },
-       { "object_id": "MIN_z", "name": "MIN_z", "type": "Double" },
-       { "object_id": "MAX_x", "name": "MAX_x", "type": "Double" },
-       { "object_id": "MAX_y", "name": "MAX_y", "type": "Double" },
-       { "object_id": "MAX_z", "name": "MAX_z", "type": "Double" },
-       { "object_id": "MEAN_x", "name": "MEAN_x", "type": "Double" },
-       { "object_id": "MEAN_y", "name": "MEAN_y", "type": "Double" },
-       { "object_id": "MEAN_z", "name": "MEAN_z", "type": "Double" },
-       { "object_id": "RMS_x", "name": "RMS_x", "type": "Double" },
-       { "object_id": "RMS_y", "name": "RMS_y", "type": "Double" },
-       { "object_id": "RMS_z", "name": "RMS_z", "type": "Double" },
-       { "object_id": "STD_x", "name": "STD_x", "type": "Double" },
-       { "object_id": "STD_y", "name": "STD_y", "type": "Double" },
-       { "object_id": "STD_z", "name": "STD_z", "type": "Double" },
-       { "object_id": "SKEW_x", "name": "SKEW_x", "type": "Double" },
-       { "object_id": "SKEW_y", "name": "SKEW_y", "type": "Double" },
-       { "object_id": "SKEW_z", "name": "SKEW_z", "type": "Double" },
-       { "object_id": "KURT_x", "name": "KURT_x", "type": "Double" },
-       { "object_id": "KURT_y", "name": "KURT_y", "type": "Double" },
-       { "object_id": "KURT_z", "name": "KURT_z", "type": "Double" }
+       { "object_id": "MIN_x", "name": "MIN_x", "type": "Number" },
+       { "object_id": "MIN_y", "name": "MIN_y", "type": "Number" },
+       { "object_id": "MIN_z", "name": "MIN_z", "type": "Number" },
+       { "object_id": "MAX_x", "name": "MAX_x", "type": "Number" },
+       { "object_id": "MAX_y", "name": "MAX_y", "type": "Number" },
+       { "object_id": "MAX_z", "name": "MAX_z", "type": "Number" },
+       { "object_id": "MEAN_x", "name": "MEAN_x", "type": "Number" },
+       { "object_id": "MEAN_y", "name": "MEAN_y", "type": "Number" },
+       { "object_id": "MEAN_z", "name": "MEAN_z", "type": "Number" },
+       { "object_id": "RMS_x", "name": "RMS_x", "type": "Number" },
+       { "object_id": "RMS_y", "name": "RMS_y", "type": "Number" },
+       { "object_id": "RMS_z", "name": "RMS_z", "type": "Number" },
+       { "object_id": "STD_x", "name": "STD_x", "type": "Number" },
+       { "object_id": "STD_y", "name": "STD_y", "type": "Number" },
+       { "object_id": "STD_z", "name": "STD_z", "type": "Number" },
+       { "object_id": "SKEW_x", "name": "SKEW_x", "type": "Number" },
+       { "object_id": "SKEW_y", "name": "SKEW_y", "type": "Number" },
+       { "object_id": "SKEW_z", "name": "SKEW_z", "type": "Number" },
+       { "object_id": "KURT_x", "name": "KURT_x", "type": "Number" },
+       { "object_id": "KURT_y", "name": "KURT_y", "type": "Number" },
+       { "object_id": "KURT_z", "name": "KURT_z", "type": "Number" }
      ],
      "static_attributes": [
        { "name":"refMotor", "type": "Relationship", "value": "urn:ngsi-ld:Motor:unit001"}
@@ -142,7 +142,7 @@ curl -iX POST \
 curl -iX POST \
   'http://localhost:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=vibrationSensor001' \
   -H 'Content-Type: application/json' \
-  -d '[{"MIN_x": "0.8628"},{"MIN_y": "0.87838"},{"MIN_z": "0.23737"},{"MAX_x": "0.172893898"},{"MAX_y": "0.36486473"},{"MAX_z": "0.3685863"},{"MEAN_x": "0.1534578"},{"MEAN_y": "0.345346"},{"MEAN_z": "0.34747"},{"RMS_x": "0.36236"},{"RMS_y": "0.45734"},{"RMS_z": "0.8628"},{"STD_x": "0.87838"},{"STD_y": "0.23737"},{"STD_z": "0.172893898"},{"SKEW_x": "0.36486473"},{"SKEW_y": "0.3685863"},{"SKEW_z": "0.1534578"},{"KURT_x": "0.345346"},{"KURT_y": "0.34747"},{"KURT_z": "0.36236"}]'
+  -d '[{"MIN_x": 0.18628},{"MIN_y": 0.187838},{"MIN_z": 0.123737},{"MAX_x": 0.1172893898},{"MAX_y": 0.316486473},{"MAX_z": 0.13685863},{"MEAN_x": 0.11534578},{"MEAN_y": 0.1345346},{"MEAN_z": 0.314747},{"RMS_x": 0.136236},{"RMS_y": 0.145734},{"RMS_z": 0.81628},{"STD_x": 0.187838},{"STD_y": 0.123737},{"STD_z": 0.1172893898},{"SKEW_x": 0.1316486473},{"SKEW_y": 0.131685863},{"SKEW_z": 0.11534578},{"KURT_x": 0.1345346},{"KURT_y": 0.134747},{"KURT_z": 0.136236}]'
   
   
   curl -X GET \
@@ -228,7 +228,7 @@ curl -iX POST \
 curl -iX POST \
   'http://localhost:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=vibrationSensor001' \
   -H 'Content-Type: application/json' \
-  -d '[{"MIN_x": "0.8628"},{"MIN_y": "0.87838"},{"MIN_z": "0.23737"},{"MAX_x": "0.172893898"},{"MAX_y": "0.36486473"},{"MAX_z": "0.3685863"},{"MEAN_x": "0.1534578"},{"MEAN_y": "0.345346"},{"MEAN_z": "0.34747"},{"RMS_x": "0.36236"},{"RMS_y": "0.45734"},{"RMS_z": "0.8628"},{"STD_x": "0.87838"},{"STD_y": "0.23737"},{"STD_z": "0.172893898"},{"SKEW_x": "0.36486473"},{"SKEW_y": "0.3685863"},{"SKEW_z": "0.1534578"},{"KURT_x": "0.345346"},{"KURT_y": "0.34747"},{"KURT_z": "0.36236"}]'
+  -d '[{"MIN_x": 1},{"MIN_y": 0.9},{"MIN_z": 0.2},{"MAX_x": 0.4},{"MAX_y": 1},{"MAX_z": 0.6},{"MEAN_x": 0.77},{"MEAN_y": 0.76},{"MEAN_z": 0.1},{"RMS_x": 1},{"RMS_y": 1},{"RMS_z": 1},{"STD_x": 1},{"STD_y":1},{"STD_z": 0.8},{"SKEW_x": 0.6},{"SKEW_y": 0.7},{"SKEW_z": 1},{"KURT_x": 0.66},{"KURT_y": 0.66},{"KURT_z": 0.166}]'
   
   
 echo -e " \033[1;32mdone\033[0m"
